@@ -8,6 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace LogicLink {
+
+    /// <summary>
+    /// Playing strategy of <see cref="NIM"/> computer moves
+    /// </summary>
     public enum Strategy {
         Misère,
         Smallest,
@@ -38,14 +42,20 @@ namespace LogicLink {
             return b;
         }
 
+        /// <summary>
+        /// Index of heap from which elements are removed
+        /// </summary>
         public readonly int Heap;
+
+        /// <summary>
+        /// Number of elements which are taken
+        /// </summary>
         public readonly int Count;
 
         public Move(int iHeap, int iCount) {
             this.Heap = iHeap;
             this.Count = iCount;
         }
-
 
         public override string ToString() {
             return $"{this.Heap + 1}:{this.Count}";
@@ -112,6 +122,9 @@ namespace LogicLink {
             set { _eStrategy = value; }
         }
 
+        /// <summary>
+        /// False, if taking the last element wins otherwise true and taking the last element looses the game
+        /// </summary>
         public bool Misère {
             get { return _bMisère; }
             set { _bMisère = value; }
@@ -170,6 +183,11 @@ namespace LogicLink {
             throw new InvalidOperationException("No more moves possible.");
         }
 
+        /// <summary>
+        /// Calulates a new random move
+        /// </summary>
+        /// <param name="rnd">Random object</param>
+        /// <returns>Move</returns>
         public Move Play(Random rnd) {
             List<int> lPlaygroundNotEmpty = _lPlayground.Where(i => i != 0).ToList();
             if(lPlaygroundNotEmpty.Count == 0)
@@ -179,7 +197,10 @@ namespace LogicLink {
             return new Move(_lPlayground.IndexOf(iHeap), (int)Math.Round(rnd.NextDouble() * (_iUpper == 0 ? iHeap : Math.Min(_iUpper, iHeap)) - 1) + 1);
         }
 
-
+        /// <summary>
+        /// Applies a move to the playground
+        /// </summary>
+        /// <param name="m">Move to apply</param>
         public void Apply(Move m) {
             if(m.Heap < 0 || m.Heap >= _lPlayground.Count)
                 throw new ArgumentOutOfRangeException(nameof(m.Heap), "Unknown heap index");
@@ -191,6 +212,9 @@ namespace LogicLink {
             _lPlayground[m.Heap] -= m.Count;
         }
 
+        /// <summary>
+        /// True, if the game has ended
+        /// </summary>
         public bool EndOfGame => _lPlayground.Sum(i => i) == 0;
 
     }

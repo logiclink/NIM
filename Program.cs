@@ -72,7 +72,10 @@ namespace LogicLink {
         /// </summary>
         /// <param name="nim">NIM game</param>
         /// <param name="bBinary">Displays a binary representation of the heap's object count.</param>
-        private static void ShowPlayground(NIM nim, bool bXor = false, bool bBinary = false) {
+        private static void ShowPlayground(NIM nim, bool bXor = false, bool bBinary = false, bool bColor = false) {
+            if(bColor)
+                Console.ForegroundColor = ConsoleColor.Yellow;
+
             if(bBinary) {
                 int r = 1;
                 if(nim.Playground.Max() > 0xFF) {
@@ -100,32 +103,41 @@ namespace LogicLink {
                 else
                     Console.WriteLine();
             }
+
+            if(bColor)
+                Console.ResetColor();
         }
 
-        private static void ShowMoves(NIM nim) {
+        private static void ShowMoves(NIM nim, bool bColor = false) {
+            if(bColor)
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+
             IEnumerable<Move> ms = nim.GetMoves();
             if(ms.Count() == 0)
                 Console.WriteLine($"\t No more optimal move possible");
             else
                 foreach(Move m in nim.GetMoves())
                     Console.WriteLine($"\t Move {m} possible");
+
+            if(bColor)
+                Console.ResetColor();
         }
 
-        private static void PlayRandom(NIM nim) {
+        private static void PlayRandom(NIM nim, bool bColor = false) {
             int i = 0;
             Random rnd = new Random();
             while(!nim.EndOfGame) {
                 Move m = nim.Play(rnd);
                 Console.WriteLine(m);
                 nim.Apply(m);
-                ShowPlayground(nim);
-                ShowPlayground(nim, true);
+                ShowPlayground(nim, bColor: bColor);
+                ShowPlayground(nim, true, bColor: bColor);
                 i++;
             }
-            Console.WriteLine($"END OF GAME - {((i & 1) == 1 ? "1st" : "2nd")} player wins.");
+            ConsoleExtensions.WriteLine($"END OF GAME - {((i & 1) == 1 ? "1st" : "2nd")} player wins.", bColor ? ConsoleColor.Red : default(ConsoleColor));
         }
 
-        private static void PlaySelf(NIM nim) {
+        private static void PlaySelf(NIM nim, bool bColor = false) {
             int i = 0;
             while(!nim.EndOfGame) {
                 Move m = nim.Play();
@@ -134,7 +146,7 @@ namespace LogicLink {
                 ShowPlayground(nim);
                 i++;
             }
-            Console.WriteLine($"END OF GAME - {((i & 1)==1? "1st" : "2nd")} player wins.");
+            ConsoleExtensions.WriteLine($"END OF GAME - {((i & 1)==1? "1st" : "2nd")} player wins.", bColor ? ConsoleColor.Red : default(ConsoleColor));
         }
         #endregion
 
@@ -164,6 +176,7 @@ namespace LogicLink {
             Console.WriteLine($" -vv      Verbose output with playground and XOR value.");
             Console.WriteLine($" -vvv     Verbose output with playground in binary format and XOR value.");
             Console.WriteLine($" -vvvv    Verbose output with playground in binary format and XOR value including possible moves.");
+            Console.WriteLine($" -c       Colorized output.");
             Console.WriteLine($" -h       Help for the command.");
             Console.WriteLine($"After the start of the command you have to enter your moves in [Heap]:[Count] format.");
             Console.WriteLine($"[Heap] represents the number of the heap and [Count] the number of objects taken.");
@@ -191,6 +204,8 @@ namespace LogicLink {
             bool bVerboseXor = false;
             bool bVerboseBinary = false;
             bool bVerboseMoves = false;
+
+            bool bColor = false;
 
             bool bHelp = false;
 
@@ -252,6 +267,10 @@ namespace LogicLink {
                         bVerboseMoves = true;
                         break;
 
+                    case "c":
+                        bColor = true;
+                        break;
+
                     case "h":
                         bHelp = true;
                         break;
@@ -280,40 +299,45 @@ namespace LogicLink {
             DateTime dt = DateTime.Now;
 
             if(bVerbose)
-                ShowPlayground(nim, bVerboseXor);
+                ShowPlayground(nim, bVerboseXor, bColor: bColor);
             if(bVerboseBinary)
-                ShowPlayground(nim, bVerboseXor, true);
+                ShowPlayground(nim, bVerboseXor, true, bColor);
             if(bVerboseMoves)
-                ShowMoves(nim);
+                ShowMoves(nim, bColor);
 
             Move m; 
             if(bFirst) {                                                // First move by computer
 
                 // Computer's move
                 m = nim.Play();
-                Console.WriteLine($"MY MOVE    ([Heap]:[Count]) {m}");
+                ConsoleExtensions.WriteLine($"MY MOVE    ([Heap]:[Count]) {m}", ConsoleColor.Cyan);
                 nim.Apply(m);
 
                 if(bVerbose)
-                    ShowPlayground(nim, bVerboseXor);
+                    ShowPlayground(nim, bVerboseXor, bColor: bColor);
                 if(bVerboseBinary)
-                    ShowPlayground(nim, bVerboseXor, true);
+                    ShowPlayground(nim, bVerboseXor, true, bColor);
                 if(bVerboseMoves)
-                    ShowMoves(nim);
+                    ShowMoves(nim, bColor);
                 if(nim.EndOfGame)
-                    Console.Write($"YOU {(nim.Misère ? "WIN" : "LOST")} AFTER {(DateTime.Now - dt).ToString(@"hh\:mm\:ss")}");
+                    ConsoleExtensions.WriteLine($"YOU {(nim.Misère ? "WIN" : "LOST")} AFTER {(DateTime.Now - dt).ToString(@"hh\:mm\:ss")}", bColor ? ConsoleColor.Red : default(ConsoleColor));
 
             }
 
             while(!nim.EndOfGame) {                                     // Loop to moves by user
 
                 // User input
+                if(bColor)
+                    Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write("YOUR MOVE? ([Heap]:[Count]) ");
                 string s = Console.ReadLine();
+                if(bColor)
+                    Console.ResetColor();
+
                 if(s == "?") {
 
                     // Hint for user
-                    ShowMoves(nim);
+                    ShowMoves(nim, bColor);
 
                 } else if(Move.TryParse(s, out m)) {
 
@@ -324,29 +348,29 @@ namespace LogicLink {
                         nim.Apply(m);
 
                         if(bVerbose)
-                            ShowPlayground(nim, bVerboseXor);
+                            ShowPlayground(nim, bVerboseXor, bColor: bColor);
                         if(bVerboseBinary)
-                            ShowPlayground(nim, bVerboseXor, true);
+                            ShowPlayground(nim, bVerboseXor, true, bColor);
                         if(bVerboseMoves)
-                            ShowMoves(nim);
+                            ShowMoves(nim, bColor);
                         if(nim.EndOfGame) {
-                            Console.Write($"YOU {(nim.Misère ? "LOST" : "WIN")} AFTER {(DateTime.Now - dt).ToString(@"hh\:mm\:ss")}");
+                            ConsoleExtensions.WriteLine($"YOU {(nim.Misère ? "LOST" : "WIN")} AFTER {(DateTime.Now - dt).ToString(@"hh\:mm\:ss")}", bColor ? ConsoleColor.Red : default(ConsoleColor));
 
                         } else {
 
                             // Computer's move
                             m = nim.Play();
-                            Console.WriteLine($"MY MOVE    ([Heap]:[Count]) {m}");
+                            ConsoleExtensions.WriteLine($"MY MOVE    ([Heap]:[Count]) {m}", ConsoleColor.Cyan);
                             nim.Apply(m);
 
                             if(bVerbose)
-                                ShowPlayground(nim, bVerboseXor);
+                                ShowPlayground(nim, bVerboseXor, bColor: bColor);
                             if(bVerboseBinary)
-                                ShowPlayground(nim, bVerboseXor, true);
+                                ShowPlayground(nim, bVerboseXor, true, bColor);
                             if(bVerboseMoves)
-                                ShowMoves(nim);
+                                ShowMoves(nim, bColor);
                             if(nim.EndOfGame)
-                                Console.Write($"YOU {(nim.Misère ? "WIN" : "LOST")} AFTER {(DateTime.Now - dt).ToString(@"hh\:mm\:ss")}");
+                                ConsoleExtensions.WriteLine($"YOU {(nim.Misère ? "WIN" : "LOST")} AFTER {(DateTime.Now - dt).ToString(@"hh\:mm\:ss")}", bColor ? ConsoleColor.Red : default(ConsoleColor));
                         }
                     } catch(Exception ex) {
                         Trace.TraceError(ex.Message);
