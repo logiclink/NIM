@@ -168,10 +168,10 @@ namespace LogicLink {
             Console.WriteLine($"Parameter:");
             Console.WriteLine($" N N N... Number of elements in heap.");
             Console.WriteLine($" -f       First move by computer.");
-            Console.WriteLine($" -s       Smallest move by computer (default).");
-            Console.WriteLine($" -l       Largest move by computer.");
+            Console.WriteLine($" -s       Smallest move by computer.");
+            Console.WriteLine($" -l       Largest move by computer (default).");
             Console.WriteLine($" -u M     M is the upper limit of elements to be removed.");
-            Console.WriteLine($" -m       Misère game in which last object taken looses.");
+            Console.WriteLine($" -m       Misère game in which last element taken looses.");
             Console.WriteLine($" -v       Verbose output with playground.");
             Console.WriteLine($" -vv      Verbose output with playground and XOR value.");
             Console.WriteLine($" -vvv     Verbose output with playground in binary format and XOR value.");
@@ -310,7 +310,7 @@ namespace LogicLink {
 
                 // Computer's move
                 m = nim.Play();
-                ConsoleExtensions.WriteLine($"MY MOVE    ([Heap]:[Count]) {m}", ConsoleColor.Cyan);
+                ConsoleExtensions.WriteLine($"MY MOVE    ([Heap]:[Count]) {m}",  bColor ? ConsoleColor.Cyan : default(ConsoleColor));
                 nim.Apply(m);
 
                 if(bVerbose)
@@ -360,7 +360,7 @@ namespace LogicLink {
 
                             // Computer's move
                             m = nim.Play();
-                            ConsoleExtensions.WriteLine($"MY MOVE    ([Heap]:[Count]) {m}", ConsoleColor.Cyan);
+                            ConsoleExtensions.WriteLine($"MY MOVE    ([Heap]:[Count]) {m}",  bColor ? ConsoleColor.Cyan : default(ConsoleColor));
                             nim.Apply(m);
 
                             if(bVerbose)
@@ -375,8 +375,8 @@ namespace LogicLink {
                     } catch(Exception ex) {
                         Trace.TraceError(ex.Message);
                     }
-                }
-
+                } else
+                    Trace.TraceError("Invalid input format");
             }
 
 #if DEBUG

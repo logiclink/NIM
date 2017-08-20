@@ -66,7 +66,7 @@ namespace LogicLink {
 
         #region Private variables
 
-        private Strategy _eStrategy = Strategy.Smallest;        // Strategy used by computer moves
+        private Strategy _eStrategy = Strategy.Largest;         // Strategy used by computer moves
         private bool _bMisère = false;                          // Last object taken looses
         private int _iUpper = 0;                                // Maximum number of elements which can be removed
         private List<int> _lPlayground = new List<int>();       // Game playground with heaps and their elements 
