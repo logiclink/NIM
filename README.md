@@ -29,7 +29,7 @@ Various game strategies can be specified with the switches “-l” (use the lar
 
 ## References
 
-<a id="f1">[1.](#a1)</a> [Nim game in Wikipedia](https://en.wikipedia.org/wiki/Nim)){:target="_blank"}  
-<a id="f2">[2.](#a2)</a> [Online Nim game (german)](http://www.alraft.de/altenhein/spiele/nim-spiel/)  
-<a id="f3">[3.](#a3)</a> Denken wie ein Computer Das NIM-Spiel und der Trick mit den binären Zahlen, Peter Schmitz, Heise ct c’t 2017, Heft 17, Seite 132-136  
-<a id="f4">[4.](#a4)</a> [Nim game in Wikipedia (german)](https://de.wikipedia.org/wiki/Nim-Spiel)  
+<a id="f1">[1.](#a1)</a> <a href="https://en.wikipedia.org/wiki/Nim" target="_blank">Nim game in Wikipedia</a>  
+<a id="f2">[2.](#a2)</a> <a href="http://www.alraft.de/altenhein/spiele/nim-spiel/" target="_blank">Online Nim game (german)</a>  
+<a id="f3">[3.](#a3)</a> Denken wie ein Computer Das NIM-Spiel und der Trick mit den bin�ren Zahlen, Peter Schmitz, Heise ct c�t 2017, Heft 17, Seite 132-136  
+<a id="f4">[4.](#a4)</a> <a href="https://de.wikipedia.org/wiki/Nim-Spiel" target="_blank">Nim game in Wikipedia (german)</a>  
