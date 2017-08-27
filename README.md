@@ -46,5 +46,6 @@ Various game strategies can be specified with the switches "-l" (use the largest
 <a id="f2">[2.](#a2)</a> <a href="http://www.alraft.de/altenhein/spiele/nim-spiel/" target="_blank">Online Nim game (german)</a>  
 <a id="f3">[3.](#a3)</a> <a href="https://shop.heise.de/katalog/denken-wie-ein-computer" target="_blank">Denken wie ein Computer Das NIM-Spiel und der Trick mit den binären Zahlen, Peter Schmitz, Heise ct c’t 2017, Heft 17, Seite 132-136</a>  
 <a id="f4">[4.](#a4)</a> <a href="https://de.wikipedia.org/wiki/Nim-Spiel" target="_blank">Nim game in Wikipedia (german)</a>  
+<a href="http://www.logiclink.de/game-of-nim#Downloads" target="_blank">Compiled command line client</a>  
 <a href="http://www.logiclink.de/nim-spiel/" target="_blank">German version of this text</a>  
 <a href="http://www.logiclink.de/" target="_blank">Home of LogicLink</a>  
